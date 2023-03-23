@@ -181,9 +181,8 @@ sshKey: "PASTE THE SSH PUBLIC KEY HERE"
 ```
 openshift-baremetal-install --dir=deploy create single-node-ignition-config
 coreos-installer iso ignition embed -fi /opt/openshift/deploy/bootstrap-in-place-for-live-iso.ign /opt/openshift/rhcos-4.8.2-x86_64-live.x86_64.iso
-cp -rf rhcos-4.8.2-x86_64-live.x86_64.iso /var/lib/libvirt/images/rhcos-4.8.2-x86_64-live.x86_64.iso
+cp -rf rhcos-4.8.2-x86_64-live.x86_64.iso /var/lib/libvirt/images/rhcos-sno-4.8.2-x86_64-live.x86_64.iso
 ```
-
 
 ## Installing Single Node Cluster 
 
@@ -193,7 +192,11 @@ https://docs.openshift.com/container-platform/4.10/installing/installing_sno/ins
 
 ```
 # Create the ip reservation first
-virsh net-update default add ip-dhcp-host "<host mac='52:fd:fc:07:21:82' name='cluster.fajlinux.local' ip='192.168.130.11'/>" --live --config
+coreos-installer iso kargs modify -a "ip=192.168.130.11::192.168.130.1:255.255.255.0:fajlinux:ens3:off:192.168.130.1" /var/lib/libvirt/images/rhcos-sno-4.8.2-x86_64-live.x86_64.iso
+
+# Demonstration of the command 
+coreos-installer iso kargs modify -a "ip=${ip}::${gateway}:${netmask}:${hostname}:${interface}:none:${nameserver}" FILENAME.
+
 
 # Create the vm
 virt-install --name="openshift-sno" \
@@ -201,7 +204,6 @@ virt-install --name="openshift-sno" \
     --ram=12288 \
     --disk path=/var/lib/libvirt/images/master-snp.qcow2,bus=sata,size=120 \
     --network network=crc,model=virtio \
-    -m 52:fd:fc:07:21:82 \
     --boot menu=on \
     --graphics vnc --console pty,target_type=serial --noautoconsole \
     --cpu host-passthrough \
