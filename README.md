@@ -220,7 +220,7 @@ You can check the progress:  ( expect lots of erros and ignore it )
 ```
 openshift-baremetal-install wait-for install-complete --dir /opt/openshift/deploy
 
-export KUBECONFIG=/root/sno/auth/kubeconfig
+export KUBECONFIG=/opt/openshift/deploy/auth/kubeconfig
 
 oc get nodes
 oc get co 
