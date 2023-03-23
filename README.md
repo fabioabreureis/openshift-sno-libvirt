@@ -42,8 +42,10 @@ cp ./coreos-installer /usr/local/bin && chmod +x /usr/local/bin/coreos-installer
 
 3) Downloading rhcos live media 
 
+In this moment I'm using the Openshift 4.8. 
+
 ```
-wget https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/latest/4.8.2/rhcos-4.8.2-x86_64-live.x86_64.iso
+wget https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.8/4.8.2/rhcos-4.8.2-x86_64-live.x86_64.iso
 ```
 
 4) Preparing the host
