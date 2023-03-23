@@ -191,15 +191,17 @@ Based on minimal requirements
 https://docs.openshift.com/container-platform/4.10/installing/installing_sno/install-sno-preparing-to-install-sno.html
 
 
-virsh net-update default add ip-dhcp-host "<host mac='52:54:00:65:aa:da' name='cluster.fajlinux.local' ip='192.168.130.11'/>" --live --config
-
 ```
+# Create the ip reservation first
+virsh net-update default add ip-dhcp-host "<host mac='52:fd:fc:07:21:82' name='cluster.fajlinux.local' ip='192.168.130.11'/>" --live --config
+
+# Create the vm
 virt-install --name="openshift-sno" \
     --vcpus=4 \
-    --ram=12 \
+    --ram=12288 \
     --disk path=/var/lib/libvirt/images/master-snp.qcow2,bus=sata,size=120 \
-    --network network=sno,model=virtio \
-    -m 52:54:00:65:aa:da \
+    --network network=crc,model=virtio \
+    -m 52:fd:fc:07:21:82 \
     --boot menu=on \
     --graphics vnc --console pty,target_type=serial --noautoconsole \
     --cpu host-passthrough \
