@@ -151,9 +151,13 @@ mkdir /opt/openshift/deploy
 
 Create the install-config.yaml file with the following template: 
 
-CLUSTER_NAME: fajlinux
-BASE_DOMAIN: local 
+```
 
+CLUSTER NAME: fajlinux
+BASE DOMAIN: local 
+MACHINE CIDR: 192.168.130.0/24 
+
+```
 
 vi deploy/install-config.yaml
 
