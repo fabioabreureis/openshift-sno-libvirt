@@ -19,7 +19,7 @@ libvirt network: default - Range 192.168.130.0/24
 Domain and Single Node IP: *.fajlinux.local 192.168.130.11 
 ```
 
-## Local host setup
+## Host setup
 
 1) Libvirt installing
 
