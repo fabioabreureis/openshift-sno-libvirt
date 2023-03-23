@@ -141,9 +141,9 @@ https://console.redhat.com/openshift/create/local
 click on "Copy pull secret" button in the Pull Secret section. 
 
 ```
-mkdir /opt/openshift 
-cd /opt/openshift/
+
 mkdir /opt/openshift/deploy
+
 ```
 
 Create the install-config.yaml file with the following template: 
