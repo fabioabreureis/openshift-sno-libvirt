@@ -99,10 +99,10 @@ yum install dnsmasq
 echo -e "[main]\ndns=dnsmasq" | sudo tee /etc/NetworkManager/conf.d/openshift.conf
 echo listen-address=127.0.0.1 > /etc/NetworkManager/dnsmasq.d/openshift.conf
 echo bind-interfaces >> /etc/NetworkManager/dnsmasq.d/openshift.conf
-echo server=185.12.64.1 >> /etc/NetworkManager/dnsmasq.d/openshift.conf
-echo server=185.12.64.2 >> /etc/NetworkManager/dnsmasq.d/openshift.conf
+echo server=192.168.130.1 >> /etc/NetworkManager/dnsmasq.d/openshift.conf
 echo server=8.8.8.8 >> /etc/NetworkManager/dnsmasq.d/openshift.conf
-echo address=/fajlinux.local/192.168.130.10 >> /etc/NetworkManager/dnsmasq.d/openshift.conf
+echo address=/fajlinux.local/192.168.130.11 >> /etc/NetworkManager/dnsmasq.d/openshift.conf
+
 
 systemctl reload NetworkManager
 
