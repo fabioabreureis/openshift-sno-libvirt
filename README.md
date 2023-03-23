@@ -49,7 +49,6 @@ wget https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/latest/4.8
 4) Preparing the host
 
 ```
-yum install centos-release-advanced-virtualization 
 yum groupinstall "Virtualization Host" -y
 yum install virt-install libvirt-client -y
 systemctl enable --now libvirtd.service
