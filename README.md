@@ -157,8 +157,8 @@ sshKey: "PASTE THE SSH PUBLIC KEY HERE"
 7) Generating single node media 
 
 ```
-openshift-baremetal-install --dir=sno create single-node-ignition-config
-coreos-installer iso ignition embed -fi /root/sno/bootstrap-in-place-for-live-iso.ign /root/rhcos-4.8.2-x86_64-live.x86_64.iso
+openshift-baremetal-install --dir=deploy create single-node-ignition-config
+coreos-installer iso ignition embed -fi /opt/openshift/deploy/bootstrap-in-place-for-live-iso.ign /opt/openshift/rhcos-4.8.2-x86_64-live.x86_64.iso
 cp -rf rhcos-4.8.2-x86_64-live.x86_64.iso /var/lib/libvirt/images/rhcos-4.8.2-x86_64-live.x86_64.iso
 ```
 
