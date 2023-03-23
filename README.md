@@ -153,7 +153,6 @@ BootstrapInPlace:
   InstallationDisk: /dev/vda
 pullSecret: "PASTE THE SECRET CONTENT HERE"
 sshKey: "PASTE THE SSH PUBLIC KEY HERE"
-EOF
 ```
 
 7) Generating single node media 
