@@ -101,25 +101,27 @@ mkdir /opt/openshift
 cd /opt/openshift
 ```
 
-Download the necessary files and binaries for Openshift 4.8
+Download the necessary files and binaries for Openshift 4.10
 
 ```
-export VERSION=latest-4.8
-export RELEASE_IMAGE=$(curl -s https://mirror.openshift.com/pub/openshift-v4/clients/ocp/$VERSION/release.txt | grep 'Pull From: quay.io' | awk -F ' ' '{print $3}')
-export cmd=openshift-baremetal-install
-export pullsecret_file=/opt/openshift/pullsecret.txt
 
-curl -s https://mirror.openshift.com/pub/openshift-v4/clients/ocp/$VERSION/openshift-client-linux.tar.gz | tar zxvf - oc
-sudo cp oc /usr/local/bin
-oc adm release extract --registry-config "${pullsecret_file}" --command=$cmd --to . ${RELEASE_IMAGE}
-sudo cp ./openshift-baremetal-install /usr/local/bin
+export VERSION=latest-4.10
+export RELEASE_IMAGE=$(curl -s https://mirror.openshift.com/pub/openshift-v4/clients/ocp/$VERSION/release.txt | grep 'Pull From: quay.io' | awk -F ' ' '{print $3}')
+
+curl -s https://mirror.openshift.com/pub/openshift-v4/clients/ocp/$VERSION/openshift-client-linux.tar.gz
+https://mirror.openshift.com/pub/openshift-v4/clients/ocp/$VERSION/openshift-install-linux.tar.gz 
+tar -xvf openshift-install.tar.gz 
+tar -xvf openshift-client-linux.tar.gz
+
 ```
 
 2) Downloading coreos-installer 
 
 ```
+
 wget https://mirror.openshift.com/pub/openshift-v4/clients/coreos-installer/v0.8.0-3/coreos-installer
 cp ./coreos-installer /usr/local/bin && chmod +x /usr/local/bin/coreos-installer
+
 ```
 
 3) Downloading rhcos live media 
@@ -127,12 +129,13 @@ cp ./coreos-installer /usr/local/bin && chmod +x /usr/local/bin/coreos-installer
 
 ```
 
-wget https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.8/4.8.2/rhcos-4.8.2-x86_64-live.x86_64.iso
+ wget -v https://rhcos.mirror.openshift.com/art/storage/releases/rhcos-4.10/410.84.202210040010-0/x86_64/rhcos-410.84.202210040010-0-live.x86_64.iso
 
 ```
 
 
 4) Creating install-config.yaml
+5) 
 
 Getting the secret at the following link: 
 
@@ -154,14 +157,20 @@ BASE_DOMAIN: local
 
 vi deploy/install-config.yaml
 
-``` 
-apiVersion: v1beta4
-baseDomain: $BASE_DOMAIN
+```
+
+apiVersion: v1
+baseDomain: local
 metadata:
-  name: $CLUSTER_NAME
+  name: fajlinux
 networking:
   networkType: OVNKubernetes
   machineCIDR: 192.168.130.0/24
+  clusterNetwork:
+  - cidr: 10.128.0.0/14
+    hostPrefix: 23 
+  serviceNetwork:
+  - 172.30.0.0/16
 compute:
 - name: worker
   replicas: 0
@@ -174,6 +183,7 @@ BootstrapInPlace:
   InstallationDisk: /dev/sda
 pullSecret: "PASTE THE SECRET CONTENT HERE"
 sshKey: "PASTE THE SSH PUBLIC KEY HERE"
+
 ```
 
 5) Generating single node media 
