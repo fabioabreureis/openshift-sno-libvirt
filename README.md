@@ -203,7 +203,7 @@ virt-install --name="openshift-sno" \
     --vcpus=4 \
     --ram=12288 \
     --disk path=/var/lib/libvirt/images/master-snp.qcow2,bus=sata,size=120 \
-    --network network=crc,model=virtio \
+    --network network=sno,model=virtio \
     --boot menu=on \
     --graphics vnc --console pty,target_type=serial --noautoconsole \
     --cpu host-passthrough \
