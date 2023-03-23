@@ -171,7 +171,7 @@ controlPlane:
 platform:
   none: {}
 BootstrapInPlace:
-  InstallationDisk: /dev/vda
+  InstallationDisk: /dev/sda
 pullSecret: "PASTE THE SECRET CONTENT HERE"
 sshKey: "PASTE THE SSH PUBLIC KEY HERE"
 ```
