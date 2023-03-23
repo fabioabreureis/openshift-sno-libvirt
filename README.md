@@ -93,11 +93,21 @@ nslookup master.fajlinux.local
 
 1) Extracting openshift-baremetal-install
 
+I will workin in the directory path /opt/openshift
+
+```
+
+mkdir /opt/openshift
+cd /opt/openshift
+```
+
+Download the necessary files and binaries for Openshift 4.8
+
 ```
 export VERSION=latest-4.8
 export RELEASE_IMAGE=$(curl -s https://mirror.openshift.com/pub/openshift-v4/clients/ocp/$VERSION/release.txt | grep 'Pull From: quay.io' | awk -F ' ' '{print $3}')
 export cmd=openshift-baremetal-install
-export pullsecret_file=~/pullsecret.txt
+export pullsecret_file=/opt/openshift/pullsecret.txt
 
 curl -s https://mirror.openshift.com/pub/openshift-v4/clients/ocp/$VERSION/openshift-client-linux.tar.gz | tar zxvf - oc
 sudo cp oc /usr/local/bin
@@ -114,10 +124,11 @@ cp ./coreos-installer /usr/local/bin && chmod +x /usr/local/bin/coreos-installer
 
 3) Downloading rhcos live media 
 
-In this moment I'm using the Openshift 4.8. 
 
 ```
+
 wget https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.8/4.8.2/rhcos-4.8.2-x86_64-live.x86_64.iso
+
 ```
 
 
