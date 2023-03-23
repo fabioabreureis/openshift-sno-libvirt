@@ -12,13 +12,16 @@ just created a recipe as of now.
 
 My environment is below:
 
+```
 RHEL8.5
 libvirtd (libvirt) 8.0.0 
 libvirt network: default - Range 192.168.130.0/24 
 Domain and Single Node IP: *.fajlinux.local 192.168.130.11 
+```
 
 1) Extracting openshift-baremetal-install
 
+```
 export VERSION=latest-4.8
 export RELEASE_IMAGE=$(curl -s https://mirror.openshift.com/pub/openshift-v4/clients/ocp/$VERSION/release.txt | grep 'Pull From: quay.io' | awk -F ' ' '{print $3}')
 export cmd=openshift-baremetal-install
@@ -28,22 +31,29 @@ curl -s https://mirror.openshift.com/pub/openshift-v4/clients/ocp/$VERSION/opens
 sudo cp oc /usr/local/bin
 oc adm release extract --registry-config "${pullsecret_file}" --command=$cmd --to . ${RELEASE_IMAGE}
 sudo cp ./openshift-baremetal-install /usr/local/bin
+```
 
 2) Downloading coreos-installer 
 
+```
 wget https://mirror.openshift.com/pub/openshift-v4/clients/coreos-installer/v0.8.0-3/coreos-installer
 cp ./coreos-installer /usr/local/bin && chmod +x /usr/local/bin/coreos-installer
+```
 
 3) Downloading rhcos live media 
 
+```
 wget https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/latest/4.8.2/rhcos-4.8.2-x86_64-live.x86_64.iso
+```
 
 4) Preparing the host
 
+```
 yum install centos-release-advanced-virtualization 
 yum groupinstall "Virtualization Host" -y
 yum install virt-install libvirt-client -y
 systemctl enable --now libvirtd.service
+```
 
 5) Creating the network 
 
@@ -66,6 +76,7 @@ vi net.xml
 ```
 
 Setting up the network 
+
 ```
 virsh net-define net.xml
 
@@ -78,11 +89,12 @@ virsh net-define net.xml
  
 ```
 
-Configuring DNS using dnsmas and NetworkManager
+Configuring DNS using dnsmasq and NetworkManager
 
 Domain: fajlinux.local 
 SNO NODE IP: 192.168.130.10
 
+```
 yum install dnsmasq
 
 echo -e "[main]\ndns=dnsmasq" | sudo tee /etc/NetworkManager/conf.d/openshift.conf
@@ -95,11 +107,13 @@ echo address=/fajlinux.local/192.168.130.10 >> /etc/NetworkManager/dnsmasq.d/ope
 
 systemctl reload NetworkManager
 
-nslookup master.sno.local
+nslookup master.fajlinux.local
+
+```
 
 6) Creating install-config.yaml
 
-
+```
 mkdir /opt/openshift 
 cd /opt/openshift/
 mkdir /opt/openshift/deploy
@@ -132,13 +146,15 @@ pullSecret: |
 sshKey: |
   ${SSH_KEY}
 EOF
+```
 
 7) Generating single node media 
 
+```
 openshift-baremetal-install --dir=sno create single-node-ignition-config
 coreos-installer iso ignition embed -fi /root/sno/bootstrap-in-place-for-live-iso.ign /root/rhcos-4.8.2-x86_64-live.x86_64.iso
 cp -rf rhcos-4.8.2-x86_64-live.x86_64.iso /var/lib/libvirt/images/rhcos-4.8.2-x86_64-live.x86_64.iso
-
+```
 
 
 8) Installing Single Node Cluster 
@@ -149,6 +165,7 @@ https://docs.openshift.com/container-platform/4.10/installing/installing_sno/ins
 
 virsh net-update default add ip-dhcp-host "<host mac='52:54:00:65:aa:da' name='cluster.fajlinux.local' ip='192.168.130.11'/>" --live --config
 
+```
 virt-install --name="openshift-sno" \
     --vcpus=4 \
     --ram=12 \
@@ -159,6 +176,7 @@ virt-install --name="openshift-sno" \
     --graphics vnc --console pty,target_type=serial --noautoconsole \
     --cpu host-passthrough \
     --cdrom /var/lib/libvirt/images/rhcos-4.8.2-x86_64-live.x86_64.iso
+```
 
 Let's wait around 40 to 60 minutes. 
 
@@ -167,6 +185,7 @@ Let's wait around 40 to 60 minutes.
 
 You can check the progress:  ( expect lots of erros and ignore it )
 
+```
 openshift-baremetal-install wait-for install-complete --dir /opt/openshift/deploy
 
 export KUBECONFIG=/root/sno/auth/kubeconfig
@@ -174,3 +193,4 @@ export KUBECONFIG=/root/sno/auth/kubeconfig
 oc get nodes
 oc get co 
 oc get clusterversion
+```
