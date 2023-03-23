@@ -207,7 +207,7 @@ virt-install --name="openshift-sno" \
     --boot menu=on \
     --graphics vnc --console pty,target_type=serial --noautoconsole \
     --cpu host-passthrough \
-    --cdrom /var/lib/libvirt/images/rhcos-4.8.2-x86_64-live.x86_64.iso
+    --cdrom /var/lib/libvirt/images/rhcos-sno-4.8.2-x86_64-live.x86_64.iso
 ```
 
 Let's wait around 40 to 60 minutes. 
