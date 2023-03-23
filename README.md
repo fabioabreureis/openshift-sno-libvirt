@@ -19,36 +19,9 @@ libvirt network: default - Range 192.168.130.0/24
 Domain and Single Node IP: *.fajlinux.local 192.168.130.11 
 ```
 
-1) Extracting openshift-baremetal-install
+## Local host setup
 
-```
-export VERSION=latest-4.8
-export RELEASE_IMAGE=$(curl -s https://mirror.openshift.com/pub/openshift-v4/clients/ocp/$VERSION/release.txt | grep 'Pull From: quay.io' | awk -F ' ' '{print $3}')
-export cmd=openshift-baremetal-install
-export pullsecret_file=~/pullsecret.txt
-
-curl -s https://mirror.openshift.com/pub/openshift-v4/clients/ocp/$VERSION/openshift-client-linux.tar.gz | tar zxvf - oc
-sudo cp oc /usr/local/bin
-oc adm release extract --registry-config "${pullsecret_file}" --command=$cmd --to . ${RELEASE_IMAGE}
-sudo cp ./openshift-baremetal-install /usr/local/bin
-```
-
-2) Downloading coreos-installer 
-
-```
-wget https://mirror.openshift.com/pub/openshift-v4/clients/coreos-installer/v0.8.0-3/coreos-installer
-cp ./coreos-installer /usr/local/bin && chmod +x /usr/local/bin/coreos-installer
-```
-
-3) Downloading rhcos live media 
-
-In this moment I'm using the Openshift 4.8. 
-
-```
-wget https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.8/4.8.2/rhcos-4.8.2-x86_64-live.x86_64.iso
-```
-
-4) Preparing the host
+1) Libvirt installing
 
 ```
 yum groupinstall "Virtualization Host" -y
@@ -56,7 +29,7 @@ yum install virt-install libvirt-client -y
 systemctl enable --now libvirtd.service
 ```
 
-5) Creating the network 
+2) Libvirt networking setup 
 
 vi net.xml 
 
@@ -89,7 +62,7 @@ virsh net-define net.xml
  
 ```
 
-Configuring DNS using dnsmasq and NetworkManager
+3) Configuring DNS using dnsmasq and NetworkManager
 
 Domain: fajlinux.local 
 SNO NODE IP: 192.168.130.11
@@ -112,7 +85,43 @@ nslookup master.fajlinux.local
 
 ```
 
-6) Creating install-config.yaml
+
+
+
+## Openshift Setup
+
+
+1) Extracting openshift-baremetal-install
+
+```
+export VERSION=latest-4.8
+export RELEASE_IMAGE=$(curl -s https://mirror.openshift.com/pub/openshift-v4/clients/ocp/$VERSION/release.txt | grep 'Pull From: quay.io' | awk -F ' ' '{print $3}')
+export cmd=openshift-baremetal-install
+export pullsecret_file=~/pullsecret.txt
+
+curl -s https://mirror.openshift.com/pub/openshift-v4/clients/ocp/$VERSION/openshift-client-linux.tar.gz | tar zxvf - oc
+sudo cp oc /usr/local/bin
+oc adm release extract --registry-config "${pullsecret_file}" --command=$cmd --to . ${RELEASE_IMAGE}
+sudo cp ./openshift-baremetal-install /usr/local/bin
+```
+
+2) Downloading coreos-installer 
+
+```
+wget https://mirror.openshift.com/pub/openshift-v4/clients/coreos-installer/v0.8.0-3/coreos-installer
+cp ./coreos-installer /usr/local/bin && chmod +x /usr/local/bin/coreos-installer
+```
+
+3) Downloading rhcos live media 
+
+In this moment I'm using the Openshift 4.8. 
+
+```
+wget https://mirror.openshift.com/pub/openshift-v4/dependencies/rhcos/4.8/4.8.2/rhcos-4.8.2-x86_64-live.x86_64.iso
+```
+
+
+4) Creating install-config.yaml
 
 Getting the secret at the following link: 
 
@@ -156,7 +165,7 @@ pullSecret: "PASTE THE SECRET CONTENT HERE"
 sshKey: "PASTE THE SSH PUBLIC KEY HERE"
 ```
 
-7) Generating single node media 
+5) Generating single node media 
 
 ```
 openshift-baremetal-install --dir=deploy create single-node-ignition-config
@@ -165,7 +174,7 @@ cp -rf rhcos-4.8.2-x86_64-live.x86_64.iso /var/lib/libvirt/images/rhcos-4.8.2-x8
 ```
 
 
-8) Installing Single Node Cluster 
+## Installing Single Node Cluster 
 
 Based on minimal requirements 
 https://docs.openshift.com/container-platform/4.10/installing/installing_sno/install-sno-preparing-to-install-sno.html
