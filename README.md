@@ -123,13 +123,17 @@ click on "Copy pull secret" button in the Pull Secret section.
 mkdir /opt/openshift 
 cd /opt/openshift/
 mkdir /opt/openshift/deploy
+```
 
-export PULL_SECRET="PASTE THE SECRET CONTENT HERE"
-export SSH_KEY="PASTE THE SSH PUBLIC KEY HERE"
-export CLUSTER_NAME=falinux
-export BASE_DOMAIN=local
+Create the install-config.yaml file with the following template: 
 
-cat << EOF > deploy/install-config.yaml
+CLUSTER_NAME: fajlinux
+BASE_DOMAIN: local 
+
+
+vi deploy/install-config.yaml
+
+``` 
 apiVersion: v1beta4
 baseDomain: $BASE_DOMAIN
 metadata:
@@ -147,8 +151,8 @@ platform:
   none: {}
 BootstrapInPlace:
   InstallationDisk: /dev/vda
-pullSecret: ${PULL_SECRET}
-sshKey: ${SSH_KEY}
+pullSecret: "PASTE THE SECRET CONTENT HERE"
+sshKey: "PASTE THE SSH PUBLIC KEY HERE"
 EOF
 ```
 
