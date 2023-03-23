@@ -68,7 +68,6 @@ vi net.xml
     </nat>
   </forward>
   <bridge name='sno' stp='on' delay='0'/>
-  <mac address='52:54:00:fd:be:d0'/>
   <ip family='ipv4' address='192.168.130.1' prefix='24'>
   </ip>
 </network>
