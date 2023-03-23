@@ -112,6 +112,14 @@ nslookup master.fajlinux.local
 
 6) Creating install-config.yaml
 
+Getting the secret at the following link: 
+
+https://console.redhat.com/openshift/create/local
+
+click on "Copy pull secret" button in the Pull Secret section. 
+
+Then created the file /opt/openshift/pullsecret.txt  with the content. 
+
 ```
 mkdir /opt/openshift 
 cd /opt/openshift/
