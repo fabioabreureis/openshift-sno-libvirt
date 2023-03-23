@@ -91,7 +91,8 @@ virsh net-define net.xml
 Configuring DNS using dnsmasq and NetworkManager
 
 Domain: fajlinux.local 
-SNO NODE IP: 192.168.130.10
+SNO NODE IP: 192.168.130.11
+Name Servers: 192.168.15.1, 8.8.8.8 
 
 ```
 yum install dnsmasq
@@ -99,7 +100,7 @@ yum install dnsmasq
 echo -e "[main]\ndns=dnsmasq" | sudo tee /etc/NetworkManager/conf.d/openshift.conf
 echo listen-address=127.0.0.1 > /etc/NetworkManager/dnsmasq.d/openshift.conf
 echo bind-interfaces >> /etc/NetworkManager/dnsmasq.d/openshift.conf
-echo server=192.168.130.1 >> /etc/NetworkManager/dnsmasq.d/openshift.conf
+echo server=192.168.15.1 >> /etc/NetworkManager/dnsmasq.d/openshift.conf
 echo server=8.8.8.8 >> /etc/NetworkManager/dnsmasq.d/openshift.conf
 echo address=/fajlinux.local/192.168.130.11 >> /etc/NetworkManager/dnsmasq.d/openshift.conf
 
