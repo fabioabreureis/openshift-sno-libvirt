@@ -93,7 +93,7 @@ nslookup master.fajlinux.local
 
 1) Extracting openshift-baremetal-install
 
-I will workin in the directory path /opt/openshift
+I'm working in the directory path /opt/openshift
 
 ```
 
