@@ -135,7 +135,6 @@ cp ./coreos-installer /usr/local/bin && chmod +x /usr/local/bin/coreos-installer
 
 
 4) Creating install-config.yaml
-5) 
 
 Getting the secret at the following link: 
 
