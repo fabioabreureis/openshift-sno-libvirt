@@ -232,7 +232,7 @@ Let's wait around 40 to 60 minutes.
 You can check the progress:  ( expect lots of erros and ignore it )
 
 ```
-openshift-baremetal-install wait-for install-complete --dir /opt/openshift/deploy
+openshift-install wait-for install-complete --dir /opt/openshift/deploy
 
 export KUBECONFIG=/opt/openshift/deploy/auth/kubeconfig
 
